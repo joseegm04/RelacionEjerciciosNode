@@ -1,0 +1,26 @@
+head 
+    link(rel="stylesheet", href="/stylesheets/style.css")
+body
+    h1 Tabla de multiplicar
+    form.formulario(method='POST', action='/tabla')
+        label(for='base') ¿Base de multiplicación? 
+        input(type='number' name='base')
+        input(type='submit' value='Calcular')
+    script. 
+        const form = document.getElementsbyClassName('formulario')[0];
+        form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const formData = new FormData(form);
+        const base = formData.get('base');
+
+        const response = await fetch('/tabla', {
+            method: 'POST',
+            body: new URLSearchParams({ base }),
+            headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        });
+
+        const tablaHtml = await response.text();
+            document.body.innerHTML = tablaHtml;
+        });
